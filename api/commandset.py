@@ -25,6 +25,10 @@ class CommandSet:
         return self.user["subject"]
     def get_place(self):
         return self.user["place"]
+    def get_emote(self):
+        return self.user["emote"]
+    def get_chara(self):
+        return self.user["chara"]
     def get_comment(self):
         return self.user["comment"]
 
@@ -128,11 +132,33 @@ class CommandSet:
         )
     def command_info(self):
         pass
-    def command_info(self):
-        pass
     def command_infoall(self):
         pass
     def command_emote(self):
-        pass
+        res = requests.patch(
+            "{}/api/users/{}/".format(
+                self.request._current_scheme_host,
+                self.get_user_id()
+            ),
+            data={"emote": self.get_args()[0]}
+        )
+        self.set_user()
+        self.set_message("{}さんがemoteを{}に変更しました。".format(
+                self.get_user_name(),
+                self.get_emote()
+            )
+        )
     def command_chara(self):
-        pass
+        res = requests.patch(
+            "{}/api/users/{}/".format(
+                self.request._current_scheme_host,
+                self.get_user_id()
+            ),
+            data={"chara": self.get_args()[0]}
+        )
+        self.set_user()
+        self.set_message("{}さんがcharaを{}に変更しました。".format(
+                self.get_user_name(),
+                self.get_chara()
+            )
+        )

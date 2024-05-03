@@ -4,6 +4,8 @@ from django.db.models import Model, CharField, DateTimeField, BooleanField, Fore
 class User(Model):
     id = CharField(max_length=100, primary_key=True)
     name = CharField(max_length=400)
+    emote = CharField(max_length=10, null=True)
+    chara = CharField(max_length=10, null=True)
     place = CharField(max_length=10, null=True)
     subject = CharField(max_length=100, null=True)
     comment = CharField(max_length=100, null=True)

@@ -10,6 +10,8 @@ curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !charge"}'
 curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !subject 簿記2級"}'
 curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !place A12"}'
 curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !comment 今日からがんばります！"}'
+curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !emote smile"}'
+curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !chara zunda"}'
 
 echo -e "\nコマンド実行"
 curl ${d}commands/1/execute/
@@ -18,3 +20,5 @@ curl ${d}commands/3/execute/
 curl ${d}commands/4/execute/
 curl ${d}commands/5/execute/
 curl ${d}commands/6/execute/
+curl ${d}commands/7/execute/
+curl ${d}commands/8/execute/
