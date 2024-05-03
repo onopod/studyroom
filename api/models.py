@@ -6,6 +6,7 @@ class User(Model):
     name = CharField(max_length=400)
     place = CharField(max_length=10, null=True)
     subject = CharField(max_length=100, null=True)
+    comment = CharField(max_length=100, null=True)
     created_at = DateTimeField(default=timezone.now)
 
     def __repr__(self):

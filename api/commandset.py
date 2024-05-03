@@ -3,7 +3,7 @@ import json
 from rest_framework.response import Response
 
 class CommandSet:
-    command_names = ["in", "out", "charge", "set", "moveto", "info", "infoall", "comment", "emote", "chara"]
+    command_names = ["in", "out", "charge", "subject", "place", "info", "infoall", "comment", "emote", "chara"]
     def __init__(self, request, command_dict):
         self.request = request
         self.command_dict = command_dict
@@ -21,8 +21,12 @@ class CommandSet:
     def get_user_name(self):
         return self.user["name"]
 
-    def get_user_subject(self):
+    def get_subject(self):
         return self.user["subject"]
+    def get_place(self):
+        return self.user["place"]
+    def get_comment(self):
+        return self.user["comment"]
 
     def get_id(self):
         return self.command_dict["id"]
@@ -65,29 +69,68 @@ class CommandSet:
     def command_in(self):
         self.set_message("{}さんが{}学習を開始しました。".format(
                 self.get_user_name(),
-                "{}の".format(self.get_user_subject()) if self.get_user_subject() else ""
+                "{}の".format(self.get_subject()) if self.get_subject() else ""
             )
         )
     def command_out(self):
         self.set_message("{}さんが{}学習を終了しました。".format(
                 self.get_user_name(),
-                "{}の".format(self.get_user_subject()) if self.get_user_subject() else ""
+                "{}の".format(self.get_subject()) if self.get_subject() else ""
             )
         )
     
     def command_charge(self):
-        pass
-    def command_set(self):
-        pass
-    def command_moveto(self):
-        pass
+        self.set_message("{}さんが学習時間を延長しました。".format(
+                self.get_user_name(),
+            )
+        )
+    def command_subject(self):
+        res = requests.patch(
+            "{}/api/users/{}/".format(
+                self.request._current_scheme_host,
+                self.get_user_id()
+            ),
+            data={"subject": self.get_args()[0]}
+        )
+        self.set_user()
+        self.set_message("{}さんが学習内容を{}に設定しました。".format(
+                self.get_user_name(),
+                self.get_subject()
+            )
+        )
+    def command_place(self):
+        res = requests.patch(
+            "{}/api/users/{}/".format(
+                self.request._current_scheme_host,
+                self.get_user_id()
+            ),
+            data={"place": self.get_args()[0]}
+        )
+        self.set_user()
+        self.set_message("{}さんが{}に移動しました。".format(
+                self.get_user_name(),
+                self.get_place()
+            )
+        )
+    def command_comment(self):
+        res = requests.patch(
+            "{}/api/users/{}/".format(
+                self.request._current_scheme_host,
+                self.get_user_id()
+            ),
+            data={"comment": self.get_args()[0]}
+        )
+        self.set_user()
+        self.set_message("{}「{}」".format(
+                self.get_user_name(),
+                self.get_comment()
+            )
+        )
     def command_info(self):
         pass
     def command_info(self):
         pass
     def command_infoall(self):
-        pass
-    def command_comment(self):
         pass
     def command_emote(self):
         pass
