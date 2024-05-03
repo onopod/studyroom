@@ -36,6 +36,20 @@ class CommandViewSet(ModelViewSet):
         c = CommandSet(request, res)
         return Response(c.execute())
 
+    @action(detail=False, methods=["GET"])
+    def unexecute_web(self, request):
+        unexecute_command = Command.objects.filter(executed_web=False).order_by("created_at").first()
+        serializer = self.get_serializer(unexecute_command)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["GET"])
+    def execute_unexecute_web(self, request):
+        url = "{}/api/commands/unexecute_web/".format(request._current_scheme_host)
+        res = requests.get(url).json()
+        url = "{}/api/commands/{}/execute/".format(request._current_scheme_host, res["id"])
+        print("url is", url)
+        return Response(requests.get(url).json())
+
     def command_dict_from_text(self, text):
         key_arr = ["user", "name", "arg1", "arg2", "arg3", "arg4"]
         command_arr = [s for s in text.split(" ") if s]

@@ -31,5 +31,9 @@ echo -e "\n詳細"
 curl ${d}commands/1/
 echo -e "\n最新"
 curl ${d}commands/latest/
+echo -e "\nWebの処理が未実施で一番古い行"
+curl ${d}commands/unexecute_web/
+echo -e "\n未処理の行を処理"
+curl ${d}commands/execute_unexecute_web/
 echo -e "Web側の処理を実行"
 curl ${d}commands/1/execute/

@@ -7,7 +7,7 @@ class User(Model):
     emote = CharField(max_length=10, null=True)
     chara = CharField(max_length=10, null=True)
     place = CharField(max_length=10, null=True)
-    subject = CharField(max_length=100, null=True)
+    subject = CharField(max_length=100, default="指定なし")
     comment = CharField(max_length=100, null=True)
     created_at = DateTimeField(default=timezone.now)
 
