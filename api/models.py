@@ -20,8 +20,8 @@ class Command(Model):
     arg2 = CharField(max_length=100, null=True)
     arg3 = CharField(max_length=100, null=True)
     arg4 = CharField(max_length=100, null=True)
-    excuted_web = BooleanField(default=False)
-    excuted_unity = BooleanField(default=False)
+    executed_web = BooleanField(default=False)
+    executed_unity = BooleanField(default=False)
     created_at = DateTimeField(default=timezone.now)
 
     def __repr__(self):
