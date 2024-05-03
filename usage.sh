@@ -26,4 +26,5 @@ echo -e "\n一覧"
 curl ${d}commands/
 echo -e "\n詳細"
 curl ${d}commands/1/
-
+echo -e "\n最新"
+curl ${d}commands/latest/
