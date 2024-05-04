@@ -10,6 +10,7 @@ from .commandset import CommandSet
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
     @action(detail=True, methods=["GET"])
     def create_if_not_exist(self, request, pk=None):
         # ユーザー情報を取得
@@ -18,6 +19,11 @@ class UserViewSet(ModelViewSet):
             # ユーザーを新規作成
             user = requests.post("{}/api/users/".format(request._current_scheme_host, pk), data={"id": pk, "name": pk}).json()
         return Response(user)
+
+    @action(detail=True, methods=["GET"])
+    def nightbot(self, request, pk=None):
+        print("user id is", pk, "query_params is", request.query_params)
+        return Response("this is test")
 
 class CommandViewSet(ModelViewSet):
     queryset = Command.objects.all()
