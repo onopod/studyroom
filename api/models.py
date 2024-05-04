@@ -16,6 +16,17 @@ class User(Model):
 
     __str__ = __repr__
 
+class Study(Model):
+    user = ForeignKey(User, on_delete=CASCADE)
+    subject = CharField(max_length=100)
+    start_at = DateTimeField(default=timezone.now)
+    estimated_end_at = DateTimeField(null=True)
+    end_at = DateTimeField(null=True)
+    def __repr__(self):
+        return "[{}] {}-{} {}".format(self.user__name, self.start_at, self.end_at, self.subject)
+
+    __str__ = __repr__
+
 class Command(Model):
     user = ForeignKey(User, on_delete=CASCADE)
     name = CharField(max_length=100)

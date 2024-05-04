@@ -3,8 +3,8 @@ import json
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import User, Command
-from .serializer import UserSerializer, CommandSerializer
+from .models import User, Study, Command
+from .serializer import UserSerializer, StudySerializer, CommandSerializer
 from .commandset import CommandSet
 
 class UserViewSet(ModelViewSet):
@@ -40,6 +40,12 @@ class UserViewSet(ModelViewSet):
         print("user id is", pk, "query_params is", request.query_params)
         return Response("this is test")
     
+class StudyViewSet(ModelViewSet):
+    queryset = Study.objects.all()
+    serializer_class = StudySerializer
+    @action(detail=False, methods=["GET"])
+    def nightbot(self, request, pk=None):
+
 class CommandViewSet(ModelViewSet):
     queryset = Command.objects.all()
     serializer_class = CommandSerializer
