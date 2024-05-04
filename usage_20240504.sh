@@ -5,3 +5,4 @@ curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urle
 curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode subject=簿記2級
 curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode place=A12
 curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode comment=がんばります
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode chara=zunda

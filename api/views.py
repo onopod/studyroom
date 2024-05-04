@@ -17,7 +17,9 @@ class UserViewSet(ModelViewSet):
             "emote": "{}さんのエモートを{}に変更しました。",
             "place": "{}さんが{}に移動しました。",
             "subject": "{}さんが学習内容を{}に設定しました。",
-            "comment": "{}「{}」"
+            "comment": "{}「{}」",
+            "chara": "{}さんがキャラを{}に設定しました。"
+
         }
         status_name = list(set(message_dict.keys()) & set(request.query_params.keys()))[0]
         print("status_name is", status_name)
