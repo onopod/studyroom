@@ -12,19 +12,32 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     
     @action(detail=True, methods=["GET"])
-    def create_if_not_exist(self, request, pk=None):
-        # ユーザー情報を取得
-        user = requests.get("{}/api/users/{}/".format(request._current_scheme_host, pk)).json()
-        if not user.get("id"):
-            # ユーザーを新規作成
-            user = requests.post("{}/api/users/".format(request._current_scheme_host, pk), data={"id": pk, "name": pk}).json()
-        return Response(user)
+    def changestatus(self, request, pk=None):
+        message_dict = {
+            "emote": "{}さんのエモートを{}に変更しました。",
+            "place": "{}さんが{}に移動しました。",
+            "subject": "{}さんが学習内容を{}に設定しました。",
+            "comment": "{}「{}」"
+        }
+        status_name = list(set(message_dict.keys()) & set(request.query_params.keys()))[0]
+        print("status_name is", status_name)
+        user, _ = User.objects.update_or_create(
+            pk=pk,
+            defaults={
+                "name": request.query_params.get("name"),
+                status_name: request.query_params.get(status_name)
+            }
+        )
+        return Response(message_dict[status_name].format(
+            user.name, 
+            getattr(user, status_name)
+        ))
 
     @action(detail=True, methods=["GET"])
     def nightbot(self, request, pk=None):
         print("user id is", pk, "query_params is", request.query_params)
         return Response("this is test")
-
+    
 class CommandViewSet(ModelViewSet):
     queryset = Command.objects.all()
     serializer_class = CommandSerializer
