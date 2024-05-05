@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 import requests
 import json
+from django.utils import timezone
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -22,7 +24,6 @@ class UserViewSet(ModelViewSet):
 
         }
         status_name = list(set(message_dict.keys()) & set(request.query_params.keys()))[0]
-        print("status_name is", status_name)
         user, _ = User.objects.update_or_create(
             pk=pk,
             defaults={
@@ -43,9 +44,66 @@ class UserViewSet(ModelViewSet):
 class StudyViewSet(ModelViewSet):
     queryset = Study.objects.all()
     serializer_class = StudySerializer
-    @action(detail=False, methods=["GET"])
-    def nightbot(self, request, pk=None):
 
+    @action(detail=False, methods=["GET"], url_path="in")
+    def study_in(self, request):
+        user, _ = User.objects.get_or_create(
+            pk=request.query_params.get("id"),
+            defaults={
+                "name": request.query_params.get("name"),
+            }
+        )
+        study = Study(**{
+            "user": user, 
+            "subject": user.subject, 
+            "estimated_end_at": datetime.now() + timedelta(hours=1)
+        })
+        study.save()
+        serializer = self.get_serializer(study)
+
+        return Response("{}さんが学習を開始しました{}-[予定]{}".format(
+            user.name,
+            study.start_at.strftime("%H:%M"),
+            study.estimated_end_at.strftime("%H:%M")
+        ))
+
+    @action(detail=False, methods=["GET"])
+    def charge(self, request):
+        user, _ = User.objects.get_or_create(
+            pk=request.query_params.get("id"),
+            defaults={
+                "name": request.query_params.get("name"),
+            }
+        )
+        study = Study.objects.filter(end_at=None).order_by("-start_at").first()
+        if not study:
+            return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
+        study.estimated_end_at = study.estimated_end_at + timedelta(hours=1)
+        study.save()
+        return Response("{}さんが学習を延長しました{}-[予定]{}".format(
+            user.name,
+            study.start_at.strftime("%H:%M"),
+            study.estimated_end_at.strftime("%H:%M")
+        ))
+
+    @action(detail=False, methods=["GET"], url_path="out")
+    def study_out(self, request):
+        user, _ = User.objects.get_or_create(
+            pk=request.query_params.get("id"),
+            defaults={
+                "name": request.query_params.get("name"),
+            }
+        )
+        study = Study.objects.filter(end_at=None).order_by("-start_at").first()
+        if not study:
+            return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
+        study.end_at = timezone.now()
+        study.save()
+        return Response("{}さんが学習を終了しました{}-{} お疲れ様でした。".format(
+            user.name,
+            study.start_at.strftime("%H:%M"),
+            study.end_at.strftime("%H:%M")
+        ))
 class CommandViewSet(ModelViewSet):
     queryset = Command.objects.all()
     serializer_class = CommandSerializer
