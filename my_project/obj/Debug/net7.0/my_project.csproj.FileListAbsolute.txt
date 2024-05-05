@@ -1,0 +1,15 @@
+/mnt/g/マイドライブ/20240501/studyroom/my_project/bin/Debug/net7.0/my_project
+/mnt/g/マイドライブ/20240501/studyroom/my_project/bin/Debug/net7.0/my_project.deps.json
+/mnt/g/マイドライブ/20240501/studyroom/my_project/bin/Debug/net7.0/my_project.runtimeconfig.json
+/mnt/g/マイドライブ/20240501/studyroom/my_project/bin/Debug/net7.0/my_project.dll
+/mnt/g/マイドライブ/20240501/studyroom/my_project/bin/Debug/net7.0/my_project.pdb
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.csproj.AssemblyReference.cache
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.AssemblyInfoInputs.cache
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.AssemblyInfo.cs
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.csproj.CoreCompileInputs.cache
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.dll
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/refint/my_project.dll
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.pdb
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/my_project.genruntimeconfig.cache
+/mnt/g/マイドライブ/20240501/studyroom/my_project/obj/Debug/net7.0/ref/my_project.dll
