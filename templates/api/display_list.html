@@ -1,0 +1,12 @@
+<ul>
+{%for subject, data in user_dict.items%}
+<li>{{subject}}</li>
+<li><ul>
+{%for u in data%}
+<li>{{u}}</li>
+{%endfor%}
+</ul>
+</li>
+{%endfor%}
+</ul>
+

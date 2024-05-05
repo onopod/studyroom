@@ -4,15 +4,20 @@ from django.db.models import Model, CharField, DateTimeField, BooleanField, Fore
 class User(Model):
     id = CharField(max_length=100, primary_key=True)
     name = CharField(max_length=400)
-    emote = CharField(max_length=10, null=True)
-    chara = CharField(max_length=10, null=True)
-    place = CharField(max_length=10, null=True)
+    emote = CharField(max_length=10, null="smile")
+    chara = CharField(max_length=10, default="zunda")
+    place = CharField(max_length=10, default="休憩所")
     subject = CharField(max_length=100, default="指定なし")
-    comment = CharField(max_length=100, null=True)
+    comment = CharField(max_length=100, default="がんばります")
     created_at = DateTimeField(default=timezone.now)
 
     def __repr__(self):
-        return "{}: {}".format(self.id, self.name)
+        return "{}[{}] {}-{}".format(
+            self.name, 
+            self.subject, 
+            "", #self.start_at.strftime("%H:%M"), 
+            "", #self.estimated_end_at.strftime("%H:%M")
+        )
 
     __str__ = __repr__
 
@@ -40,4 +45,31 @@ class Command(Model):
     def __repr__(self):
         return "{}: {} {} {}".format(self.id, self.name, self.executed_web, self.executed_unity)
     
+    __str__ = __repr__
+
+class Display(Model):
+
+    id = CharField(max_length=100, primary_key=True)
+    name = CharField(max_length=400)
+    emote = CharField(max_length=10, null=True)
+    chara = CharField(max_length=10, null=True)
+    place = CharField(max_length=10, null=True)
+    subject = CharField(max_length=100, default="指定なし")
+    comment = CharField(max_length=100, null=True)
+    created_at = DateTimeField(default=timezone.now)
+    start_at = DateTimeField(default=timezone.now)
+    estimated_end_at = DateTimeField(null=True)
+    end_at = DateTimeField(null=True)
+    class Meta:
+        managed = False
+        db_table = "api_display"
+
+    def __repr__(self):
+        return "{}[{}] {}-{}".format(
+            self.name, 
+            self.subject, 
+            self.start_at.strftime("%H:%M"),
+            self.estimated_end_at.strftime("%H:%M")
+        )
+
     __str__ = __repr__
