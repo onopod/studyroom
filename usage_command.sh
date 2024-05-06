@@ -1,24 +1,23 @@
-# bash migrate.sh && bash usage_command.sh
 d=http://localhost:8000/api/
-j='Content-Type: application/json'
-echo -e "\nユーザー新規登録"
-curl -X POST ${d}users/ -d id=ONOPOD -d name=小野
-echo -e "\nコマンド登録"
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !in"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !out"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !charge"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !subject 簿記2級"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !place A12"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !comment 今日からがんばります！"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !emote smile"}'
-curl -X POST -H "${j}" ${d}commands/register/ -d '{"text": "ONOPOD !chara zunda"}'
-
-echo -e "\nコマンド実行"
-curl ${d}commands/1/execute/
-curl ${d}commands/2/execute/
-curl ${d}commands/3/execute/
-curl ${d}commands/4/execute/
-curl ${d}commands/5/execute/
-curl ${d}commands/6/execute/
-curl ${d}commands/7/execute/
-curl ${d}commands/8/execute/
+#d=https://onopod-1.paiza-user-basic.cloud:8000/api/
+echo -e "\nコマンド登録テスト"
+curl --get ${d}studies/in/ --data-urlencode id=ONOPOD --data-urlencode name=小野
+curl --get ${d}studies/charge/ --data-urlencode id=ONOPOD --data-urlencode name=小野
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode emote=smile
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode subject=簿記2級
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode place=A12
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode comment=がんばります
+curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode chara=zunda
+curl --get ${d}studies/out/ --data-urlencode id=ONOPOD --data-urlencode name=小野
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+curl --get ${d}commands/unexecute_unity/
+sqlite3 db.sqlite3 -echo "select * from api_user;"
+sqlite3 db.sqlite3 -echo "select * from api_study;"
+sqlite3 db.sqlite3 -echo "select * from api_command;"

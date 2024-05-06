@@ -31,15 +31,11 @@ class UserViewSet(ModelViewSet):
                 status_name: request.query_params.get(status_name)
             }
         )
+        Command(user=user, name=status_name, arg1=request.query_params.get(status_name)).save()
         return Response(message_dict[status_name].format(
             user.name, 
             getattr(user, status_name)
         ))
-
-    @action(detail=True, methods=["GET"])
-    def nightbot(self, request, pk=None):
-        print("user id is", pk, "query_params is", request.query_params)
-        return Response("this is test")
     
 class StudyViewSet(ModelViewSet):
     queryset = Study.objects.all()
@@ -61,6 +57,7 @@ class StudyViewSet(ModelViewSet):
         study.save()
         serializer = self.get_serializer(study)
 
+        Command(user=user, name="in").save()
         return Response("{}さんが学習を開始しました{}-[予定]{}".format(
             user.name,
             study.start_at.strftime("%H:%M"),
@@ -80,6 +77,7 @@ class StudyViewSet(ModelViewSet):
             return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
         study.estimated_end_at = study.estimated_end_at + timedelta(hours=1)
         study.save()
+        Command(user=user, name="charge").save()
         return Response("{}さんが学習を延長しました{}-[予定]{}".format(
             user.name,
             study.start_at.strftime("%H:%M"),
@@ -99,47 +97,26 @@ class StudyViewSet(ModelViewSet):
             return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
         study.end_at = timezone.now()
         study.save()
+        Command(user=user, name="out").save()
         return Response("{}さんが学習を終了しました{}-{} お疲れ様でした。".format(
             user.name,
             study.start_at.strftime("%H:%M"),
             study.end_at.strftime("%H:%M")
         ))
+
 class CommandViewSet(ModelViewSet):
     queryset = Command.objects.all()
     serializer_class = CommandSerializer
 
-    @action(detail=False, methods=["POST"])
-    def register(self, request):
-        command_dict = self.command_dict_from_text(request.data["text"])
-        #ユーザーが存在しなければ作成
-        user = requests.get("{}/api/users/{}/create_if_not_exist/".format(request._current_scheme_host, command_dict["user"])).json()
-
-        # コマンドを登録
-        url = "{}/api/commands/".format(request._current_scheme_host)
-        command = requests.post(url, data=json.dumps(command_dict), headers={"Content-Type": "application/json"}).json()
-
-        # コマンドを実行
-        res = requests.get("{}/api/commands/{}/execute/".format(request._current_scheme_host, command["id"])).json()
-        return Response(res)
-
-    @action(detail=True, methods=["GET"])
-    def execute(self, request, pk=None):
-        # コマンドの内容を取得
-        url = "{}/api/commands/{}/".format(request._current_scheme_host, pk)
-        res = requests.get(url).json()
-        c = CommandSet(request, res)
-        return Response(c.execute())
-
     @action(detail=False, methods=["GET"])
     def unexecute_unity(self, request):
         unexecute_command = Command.objects.filter(executed_unity=False).order_by("created_at").first()
-        serializer = self.get_serializer(unexecute_command)
-        return Response(serializer.data)
+        
+        if not unexecute_command:
+            return Response("")
 
-    def command_dict_from_text(self, text):
-        key_arr = ["user", "name", "arg1", "arg2", "arg3", "arg4"]
-        command_arr = [s for s in text.split(" ") if s]
-        res = {}
-        for idx, command in enumerate(command_arr):
-            res[key_arr[idx]] = command
-        return res
+        serializer = self.get_serializer(unexecute_command)
+        # 実行済にする
+        unexecute_command.executed_unity = True
+        unexecute_command.save()
+        return Response(serializer.data)
