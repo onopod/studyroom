@@ -9,15 +9,6 @@ curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urle
 curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode comment=がんばります
 curl --get ${d}users/ONOPOD/changestatus/ --data-urlencode id=ONOPOD --data-urlencode name=小野 --data-urlencode chara=zunda
 curl --get ${d}studies/out/ --data-urlencode id=ONOPOD --data-urlencode name=小野
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
-curl --get ${d}commands/unexecute_unity/
 sqlite3 db.sqlite3 -echo "select * from api_user;"
 sqlite3 db.sqlite3 -echo "select * from api_study;"
 sqlite3 db.sqlite3 -echo "select * from api_command;"

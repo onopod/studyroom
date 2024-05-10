@@ -29,7 +29,8 @@ class Study(Model):
 
 class Command(Model):
     user = ForeignKey(User, on_delete=CASCADE)
-    name = CharField(max_length=100)
+    user_name = CharField(max_length=400)
+    command_name = CharField(max_length=100)
     arg1 = CharField(max_length=100, null=True)
     arg2 = CharField(max_length=100, null=True)
     arg3 = CharField(max_length=100, null=True)

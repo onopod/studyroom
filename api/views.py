@@ -31,7 +31,7 @@ class UserViewSet(ModelViewSet):
                 status_name: request.query_params.get(status_name)
             }
         )
-        Command(user=user, name=status_name, arg1=request.query_params.get(status_name)).save()
+        Command(user=user, user_name=user.name, command_name=status_name, arg1=request.query_params.get(status_name)).save()
         return Response(message_dict[status_name].format(
             user.name, 
             getattr(user, status_name)
@@ -57,7 +57,7 @@ class StudyViewSet(ModelViewSet):
         study.save()
         serializer = self.get_serializer(study)
 
-        Command(user=user, name="in").save()
+        Command(user=user, user_name=user.name, command_name="in").save()
         return Response("{}さんが学習を開始しました{}-[予定]{}".format(
             user.name,
             study.start_at.strftime("%H:%M"),
@@ -77,7 +77,7 @@ class StudyViewSet(ModelViewSet):
             return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
         study.estimated_end_at = study.estimated_end_at + timedelta(hours=1)
         study.save()
-        Command(user=user, name="charge").save()
+        Command(user=user, user_name=user.name, command_name="charge").save()
         return Response("{}さんが学習を延長しました{}-[予定]{}".format(
             user.name,
             study.start_at.strftime("%H:%M"),
@@ -97,7 +97,7 @@ class StudyViewSet(ModelViewSet):
             return Response("{}さん：学習が開始されていません。先にinコマンドを実行してください。".format(user.name))
         study.end_at = timezone.now()
         study.save()
-        Command(user=user, name="out").save()
+        Command(user=user, user_name=user.name, command_name="out").save()
         return Response("{}さんが学習を終了しました{}-{} お疲れ様でした。".format(
             user.name,
             study.start_at.strftime("%H:%M"),
