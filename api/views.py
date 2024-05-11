@@ -2,10 +2,12 @@ from datetime import datetime, timedelta
 import requests
 import json
 from django.utils import timezone
+import django_filters.rest_framework
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import User, Study, Command
+from .filters import StudyFilter
 from .serializer import UserSerializer, StudySerializer, CommandSerializer
 from .commandset import CommandSet
 
@@ -40,6 +42,8 @@ class UserViewSet(ModelViewSet):
 class StudyViewSet(ModelViewSet):
     queryset = Study.objects.all()
     serializer_class = StudySerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = StudyFilter
 
     @action(detail=False, methods=["GET"], url_path="in")
     def study_in(self, request):
